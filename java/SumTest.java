@@ -14,6 +14,7 @@ public class SumTest {
         checker.test(1, "1 ");
         checker.test(1, "\t1\t");
         checker.test(12345, "\t12345\t");
+        checker.test(60, "010", "020", "030");
         checker.test(1368, " 123 456 789 ");
         checker.test(-1, "-1");
         checker.test(-6, "-1", "-2", "-3");
