@@ -31,7 +31,14 @@ public class SumChecker {
 
     public void test(final long result, final String... input) {
         total++;
-        System.err.format("Running test %02d: java %s \"%s\"\n", total, method.getDeclaringClass().getName(), String.join("\" \"", input));
+        final StringBuilder sb = new StringBuilder();
+        for (final String s : input) {
+            if (sb.length() > 0) {
+                sb.append(" ");
+            }
+            sb.append(s);
+        }
+        System.err.format("Running test %02d: java %s \"%s\"\n", total, method.getDeclaringClass().getName(), sb.toString());
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
