@@ -82,6 +82,6 @@ public class SumChecker {
     }
 
     private String randomSpace() {
-        return random.nextBoolean() ? "" : " \t\n\u000B\f".charAt(random.nextInt(5)) + randomSpace();
+        return random.nextBoolean() ? "" : " \t\n\u000B\u2029\f".charAt(random.nextInt(6)) + randomSpace();
     }
 }
