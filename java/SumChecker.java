@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
- * @version $$Id$$
  */
 public class SumChecker {
     private int total = 0;
