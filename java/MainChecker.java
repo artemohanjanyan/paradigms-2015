@@ -12,10 +12,9 @@ import java.util.Scanner;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public class MainChecker {
-    private int total = 0;
-    protected int passed = 0;
     private final Method method;
     public final Random random = new Random(8045702385702345702L);
+    private final TestCounter counter = new TestCounter();
 
     public MainChecker(final String className) {
         try {
@@ -27,8 +26,8 @@ public class MainChecker {
     }
 
     public String run(final String... input) {
-        total++;
-        System.err.format("Running test %02d: java %s \"%s\"\n", total, method.getDeclaringClass().getName(), join(input));
+        counter.nextTest();
+        System.err.format("Running test %02d: java %s \"%s\"\n", counter.getTest(), method.getDeclaringClass().getName(), join(input));
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
@@ -75,7 +74,7 @@ public class MainChecker {
         final String output = run(input);
         if (output != null) {
             if (check(result, output)) {
-                passed++;
+                counter.passed();
             } else {
                 System.err.println(String.format("Expected %s found %s", join(result), output));
             }
@@ -97,7 +96,6 @@ public class MainChecker {
     }
 
     public void printStatus() {
-        System.err.println("===========================================");
-        System.err.println(String.format("Test run: %d, passed; %d, failed: %d", total, passed, total - passed));
+        counter.printStatus();
     }
 }
