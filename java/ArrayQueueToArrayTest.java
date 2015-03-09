@@ -11,8 +11,8 @@ public class ArrayQueueToArrayTest extends ArrayQueueTest<ArrayQueueToArrayTest.
     }
 
     @Override
-    protected ToArrayQueue create(final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
-        return new ToArrayQueue(mode);
+    protected ToArrayQueue create(final String className, final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
+        return new ToArrayQueue(className, mode);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class ArrayQueueToArrayTest extends ArrayQueueTest<ArrayQueueToArrayTest.
     static class ToArrayQueue extends ArrayQueueTest.Queue {
         private final ZMethod<Object[]> toArray;
 
-        public ToArrayQueue(final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
-            super("ArrayQueue", mode);
+        public ToArrayQueue(final String className, final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
+            super(className, mode);
             toArray = findMethod("toArray");
         }
 

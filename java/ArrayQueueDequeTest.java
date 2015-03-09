@@ -10,8 +10,8 @@ public class ArrayQueueDequeTest extends ArrayQueueTest<ArrayQueueDequeTest.Queu
     }
 
     @Override
-    protected QueueDeque create(final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
-        return new QueueDeque(mode);
+    protected QueueDeque create(final String className, final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
+        return new QueueDeque(className, mode);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class ArrayQueueDequeTest extends ArrayQueueTest<ArrayQueueDequeTest.Queu
         private final ZMethod<Object> peek;
         private final ZMethod<Object> remove;
 
-        public QueueDeque(final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
-            super("ArrayQueue", mode);
+        public QueueDeque(final String className, final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
+            super(className, mode);
             push = findMethod("push", Object.class);
             peek = findMethod("peek");
             remove = findMethod("remove");

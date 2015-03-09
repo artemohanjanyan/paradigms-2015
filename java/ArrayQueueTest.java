@@ -26,11 +26,15 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> {
     }
 
     protected void test() throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
+        test("ArrayQueue", 1, Mode.values());
+    }
+
+    protected void test(final String className, final int step, final Mode... modes) throws NoSuchMethodException, MalformedURLException, ClassNotFoundException {
         checkAssert();
 
-        for (final Mode mode : Mode.values()) {
+        for (final Mode mode : modes) {
             System.out.println("Running " + getClass().getName() + " in " + mode + " mode");
-            test(mode);
+            test(className, mode, step);
         }
         System.out.println("Done " + getClass().getName());
     }
@@ -39,7 +43,7 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> {
         MODULE("Module") {
             @Override
             public <T> ZMethod<T> getMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-                return checkStatic(true, new ZMethod<T>(instance, name, args));
+                return checkStatic(true, new ZMethod<>(instance, name, args));
             }
         },
         ADT("ADT") {
@@ -65,7 +69,7 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> {
         CLASS("") {
             @Override
             public <T> ZMethod<T> getMethod(final Object instance, final String name, final Class<?>... args) throws NoSuchMethodException {
-                return checkStatic(false, new ZMethod<T>(instance, name, args));
+                return checkStatic(false, new ZMethod<>(instance, name, args));
             }
         };
 
@@ -115,18 +119,18 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> {
         }
     }
 
-    private void test(final Mode mode) throws NoSuchMethodException, MalformedURLException, ClassNotFoundException {
-        testEmpty(create(mode));
-        testSingleton(create(mode));
-        testClear(create(mode));
-        for (int i = 0; i <= 10; i++) {
-            testRandom(create(mode), 1_000_000, (double) i / 10);
+    private void test(final String className, final Mode mode, final int step) throws NoSuchMethodException, MalformedURLException, ClassNotFoundException {
+        testEmpty(create(className, mode));
+        testSingleton(create(className, mode));
+        testClear(create(className, mode));
+        for (int i = 0; i <= 10; i += step) {
+            testRandom(create(className, mode), 1_000_000, (double) i / 10);
         }
     }
 
     @SuppressWarnings("unchecked")
-    protected T create(final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
-        return (T) new Queue("ArrayQueue", mode);
+    protected T create(final String className, final Mode mode) throws NoSuchMethodException, ClassNotFoundException, MalformedURLException {
+        return (T) new Queue(className, mode);
     }
 
     protected void testEmpty(final T queue) {
@@ -226,26 +230,34 @@ public class ArrayQueueTest<T extends ArrayQueueTest.Queue> {
         private final ZMethod<Integer> size;
         private final ZMethod<Boolean> isEmpty;
         private final ZMethod<Void> clear;
-        private final Class<?> clazz;
         private final Mode mode;
-        private final Object instance;
+        protected final Object instance;
 
         public Queue(final String name, final Mode mode) throws MalformedURLException, NoSuchMethodException, ClassNotFoundException {
+            this(createInstance(name, mode), mode);
+        }
+
+        public Queue(final Object instance, final Mode mode) throws NoSuchMethodException {
             this.mode = mode;
-            final String className = name + mode.suffix;
-            final URL url = new File(".").toURI().toURL();
-            clazz = new URLClassLoader(new URL[]{url}).loadClass(className);
-            try {
-                instance = clazz.newInstance();
-            } catch (final Exception e) {
-                throw new AssertionError("Cannot create instance of " + className, e);
-            }
+            this.instance = instance;
+
             enqueue = findMethod("enqueue", Object.class);
             element = findMethod("element");
             dequeue = findMethod("dequeue");
             size = findMethod("size");
             isEmpty = findMethod("isEmpty");
             clear = findMethod("clear");
+        }
+
+        private static Object createInstance(final String name, final Mode mode) throws MalformedURLException, ClassNotFoundException {
+            final String className = name + mode.suffix;
+            final URL url = new File(".").toURI().toURL();
+            final Class<?> clazz = new URLClassLoader(new URL[]{url}).loadClass(className);
+            try {
+                return clazz.newInstance();
+            } catch (final Exception e) {
+                throw new AssertionError("Cannot create instance of " + className, e);
+            }
         }
 
         protected <T> ZMethod<T> findMethod(final String name, final Class<?>... args) throws NoSuchMethodException {
