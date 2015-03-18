@@ -3,6 +3,13 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
+Домашнее задание 6. Разбор выражений
+---
+ * *Базовая*
+    * Реализовать интерфейс [Parser](java/expression/Parser.java)
+    * [Исходный код тестов](java/expression/ParserTest.java)
+
+
 Домашнее задание 5. Вычисление выражений
 ---
  * *Простая*
