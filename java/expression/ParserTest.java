@@ -14,9 +14,13 @@ import static expression.Util.*;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public class ParserTest {
-    protected final List<Op<UnaryOperator<Integer>>> unary = new ArrayList<>();
-    protected final List<List<Op<BinaryOperator<Integer>>>> levels = new ArrayList<>();
-    protected List<Op<TripleExpression>> tests;
+    protected final List<Op<UnaryOperator<Long>>> unary = new ArrayList<>();
+    protected final List<List<Op<BinaryOperator<Long>>>> levels = new ArrayList<>();
+    protected List<Op<TExpression>> tests;
+
+    public enum Reason {
+        DBZ, OVERFLOW
+    }
 
     protected ParserTest() {
         unary.add(new Op<>("-", a -> -a));
@@ -30,25 +34,28 @@ public class ParserTest {
                 new Op<>("/", (a, b) -> b == 0 ? null : a / b)
         ));
 
-        tests = ops(
-                new Op<TripleExpression>("10", (x, y, z) -> 10),
-                new Op<>("x", (TripleExpression) (x, y, z) -> x),
-                new Op<>("y", (TripleExpression) (x, y, z) -> y),
-                new Op<>("z", (TripleExpression) (x, y, z) -> z),
-                new Op<>("x+2", (TripleExpression) (x, y, z) -> x + 2),
-                new Op<>("2-y", (TripleExpression) (x, y, z) -> 2 - y),
-                new Op<>("  3*  z  ", (TripleExpression) (x, y, z) -> 3 * z),
-                new Op<>("x/  -  2", (TripleExpression) (x, y, z) -> -x / 2),
-                new Op<>("x*y+(z-1   )/10", (TripleExpression) (x, y, z) -> x * y + (z - 1) / 10),
-                new Op<>("-(-(-\t\t-5 + 16   *x*y) + 1 * z) -(((-11)))", (TripleExpression) (x, y, z) -> -(-(5 + 16 * x * y) + z) + 11),
-                new Op<>("" + Integer.MAX_VALUE, (TripleExpression) (x, y, z) -> Integer.MAX_VALUE),
-                new Op<>("" + Integer.MIN_VALUE, (TripleExpression) (x, y, z) -> Integer.MIN_VALUE),
-                new Op<>("x--y--z", (TripleExpression) (x, y, z) -> x + y + z),
-                new Op<>("((2+2))-0/(--2)*555", (TripleExpression) (x, y, z) -> 4),
-                new Op<>("x-x+y-y+z-(z)", (TripleExpression) (x, y, z) -> 0),
-                new Op<>(repeat("(", 500) + "x + y + (-10*-z)" + repeat(")", 500), (TripleExpression) (x, y, z) -> x + y + 10 * z),
-                new Op<>("2*" + Integer.MAX_VALUE, (TripleExpression) (x, y, z) -> 2 * Integer.MAX_VALUE)
+        tests = ParserTest.<TExpression>ops(
+                new Op<>("10", (x, y, z) -> 10L),
+                new Op<>("x", (x, y, z) -> x),
+                new Op<>("y", (x, y, z) -> y),
+                new Op<>("z", (x, y, z) -> z),
+                new Op<>("x+2", (x, y, z) -> x + 2),
+                new Op<>("2-y", (x, y, z) -> 2 - y),
+                new Op<>("  3*  z  ", (x, y, z) -> 3 * z),
+                new Op<>("x/  -  2", (x, y, z) -> -x / 2),
+                new Op<>("x*y+(z-1   )/10", (x, y, z) -> x * y + (z - 1) / 10),
+                new Op<>("-(-(-\t\t-5 + 16   *x*y) + 1 * z) -(((-11)))", (x, y, z) -> -(-(5 + 16 * x * y) + z) + 11),
+                new Op<>("" + Integer.MAX_VALUE, (x, y, z) -> (long) Integer.MAX_VALUE),
+                new Op<>("" + Integer.MIN_VALUE, (x, y, z) -> (long) Integer.MIN_VALUE),
+                new Op<>("x--y--z", (x, y, z) -> x + y + z),
+                new Op<>("((2+2))-0/(--2)*555", (x, y, z) -> 4L),
+                new Op<>("x-x+y-y+z-(z)", (x, y, z) -> 0L),
+                new Op<>(repeat("(", 500) + "x + y + (-10*-z)" + repeat(")", 500), (x, y, z) -> x + y + 10 * z)
         );
+    }
+
+    public interface TExpression {
+        Long evaluate(long x, long y, long z);
     }
 
     @SafeVarargs
@@ -62,13 +69,13 @@ public class ParserTest {
     }
 
     protected void test() {
-        for (final Op<TripleExpression> test : tests) {
+        for (final Op<TExpression> test : tests) {
             System.out.println("Testing: " + test.name);
-            final TripleExpression actual = parse(test.name);
+            final TripleExpression expression = parse(test.name);
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     for (int k = 0; k < 10; k++) {
-                        assertEquals(String.format("f(%d, %d, %d)", i, j, k), actual.evaluate(i, j, k), test.f.evaluate(i, j, k));
+                        check(new int[]{i, j, k}, expression, lift(test.f.evaluate(i, j, k)));
                     }
                 }
             }
@@ -81,32 +88,44 @@ public class ParserTest {
         System.out.println("OK");
     }
 
-    public static void testRandom(final int seq, final int n, final BiFunction<int[], Integer, Test> f) {
+    protected TripleExpression parse(final String expression) {
+        try {
+            return new ExpressionParser().parse(expression);
+        } catch (final Exception e) {
+            throw new AssertionError("Parser failed", e);
+        }
+    }
+
+    public void testRandom(final int seq, final int n, final BiFunction<int[], Integer, Test> f) {
         System.out.println("Testing random tests #" + seq);
         for (int i = 0; i < n; i++) {
             if (i % 100 == 0) {
                 System.out.println("Completed " + i + " out of " + n);
             }
             final int[] vars = new int[]{RNG.nextInt(), RNG.nextInt(), RNG.nextInt()};
-            tryTest(vars, f.apply(vars, i));
+
+            final Test test = f.apply(vars, i);
+            try {
+                total += test.expr.length();
+                check(vars, parse(test.expr), test.answer);
+            } catch (final Throwable e) {
+                System.out.println("Failed test: " + test.expr);
+                throw e;
+            }
         }
     }
 
     static long total;
 
-    private static void tryTest(final int[] vars, final Test test) {
+    private void check(final int[] vars, final TripleExpression expression, final Either<Reason, Integer> answer) {
         try {
-            try {
-                total += test.expr.length();
-                final int answer = parse(test.expr).evaluate(vars[0], vars[1], vars[2]);
-                assertTrue("division by zero error expected", test.answer != null);
-                assertEquals(String.format("f(%d, %d, %d)", vars[0], vars[1], vars[2]), answer, test.answer);
-            } catch (final ArithmeticException e) {
-                assertTrue("no division by zero in this expression", test.answer == null);
+            final int actual = expression.evaluate(vars[0], vars[1], vars[2]);
+            assertTrue(String.format("Error expected x = %d, y=%d, z=%d", vars[0], vars[1], vars[2]), !answer.isLeft());
+            assertEquals(String.format("f(%d, %d, %d)", vars[0], vars[1], vars[2]), actual, answer.getRight());
+        } catch (final Exception e) {
+            if (!answer.isLeft()) {
+                throw new AssertionError(String.format("No error expected for x = %d, y=%d, z=%d", vars[0], vars[1], vars[2]), e);
             }
-        } catch (final Throwable e) {
-            System.out.println("Failed test: " + test.expr);
-            throw e;
         }
     }
 
@@ -131,10 +150,10 @@ public class ParserTest {
     private static Test constOrVariable(final int[] vars) {
         if (RNG.nextBoolean()) {
             final int id = randomInt(3);
-            return new Test("xyz".charAt(id) + "", vars[id]);
+            return new Test("xyz".charAt(id) + "", Either.right(vars[id]));
         } else {
             final int value = RNG.nextInt();
-            return new Test(value + "", value);
+            return new Test(value + "", Either.right(value));
         }
     }
 
@@ -160,14 +179,17 @@ public class ParserTest {
         return new Test("("  + t.expr + ")", t.answer);
     }
 
-    private static Test binary(final List<Op<BinaryOperator<Integer>>> ops, final Test t1, final Test t2) {
-        final Op<BinaryOperator<Integer>> op = random(ops);
-        return new Test(t1.expr + op.name + t2.expr, t1.answer == null || t2.answer == null ? null : op.f.apply(t1.answer, t2.answer));
+    private Test binary(final List<Op<BinaryOperator<Long>>> ops, final Test t1, final Test t2) {
+        final Op<BinaryOperator<Long>> op = random(ops);
+        return new Test(
+                t1.expr + op.name + t2.expr,
+                t1.answer.flatMapRight(a -> t2.answer.mapRight(b -> op.f.apply((long) a, (long) b)).flatMapRight(this::lift))
+        );
     }
 
     private Test unary(final Test arg) {
-        final Op<UnaryOperator<Integer>> op = random(unary);
-        return new Test(op.name + arg.expr, arg.answer == null ? null : op.f.apply(arg.answer));
+        final Op<UnaryOperator<Long>> op = random(unary);
+        return new Test(op.name + " " + arg.expr, arg.answer.mapRight(a -> op.f.apply((long) a)).flatMapRight(this::lift));
     }
 
     private Test genValue(final int depth, final int coefficient, final int[] vars) {
@@ -182,19 +204,18 @@ public class ParserTest {
         return randomInt(depth + coefficient) < coefficient;
     }
 
+    protected Either<Reason, Integer> lift(final Long value) {
+        return value != null ? Either.right(value.intValue()) : Either.left(Reason.DBZ);
+    }
+
     public static class Test {
         final String expr;
-        final Integer answer;
+        final Either<Reason, Integer> answer;
 
-        Test(final String expr, final Integer answer) {
+        Test(final String expr, final Either<Reason, Integer> answer) {
             this.expr = expr;
             this.answer = answer;
         }
-    }
-
-    private static TripleExpression parse(final String description) {
-        final Parser parser = new ExpressionParser();
-        return parser.parse(description);
     }
 
     protected static final class Op<T> {

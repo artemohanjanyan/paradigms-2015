@@ -9,11 +9,11 @@ public class ParserHardTest extends ParserEasyTest {
         unary.add(new Op<>(" square ", a -> a * a));
 
         tests.addAll(ops(
-                new Op<>("abs -5", (x, y, z) -> 5),
+                new Op<>("abs -5", (x, y, z) -> 5L),
                 new Op<>("abs (x - y)", (x, y, z) -> Math.abs(x - y)),
                 new Op<>("abs -x", (x, y, z) -> Math.abs(-x)),
                 new Op<>("abs(x+y)", (x, y, z) -> Math.abs(x + y)),
-                new Op<>("square -5", (x, y, z) -> 25),
+                new Op<>("square -5", (x, y, z) -> 25L),
                 new Op<>("square (x - y)", (x, y, z) -> (x - y) * (x - y)),
                 new Op<>("square -x", (x, y, z) -> x * x),
                 new Op<>("square(x+y)", (x, y, z) -> (x + y) * (x + y))

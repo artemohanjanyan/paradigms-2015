@@ -3,6 +3,15 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
+Домашнее задание 7. Обработка ошибок
+---
+ * *Базовая*
+    * Реализовать интерфейс [Parser](java/expression/Parser.java)
+    * Нельзя использовать типы `long` и `double`
+    * Нельзя использовать методы классов `Math` и `StrictMath`
+    * [Исходный код тестов](java/expression/ExceptionsTest.java)
+
+
 Домашнее задание 6. Разбор выражений
 ---
  * *Простая*
