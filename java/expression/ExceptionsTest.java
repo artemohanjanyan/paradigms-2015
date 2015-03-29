@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.LongBinaryOperator;
 
+import static expression.Util.*;
+
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
@@ -13,25 +15,19 @@ public class ExceptionsTest extends ParserTest {
     private final char[] CHARS = "AZ-+*%()[]".toCharArray();
 
     static {
-        addValue(Integer.MIN_VALUE + D);
-        addValue(Integer.MIN_VALUE / 2);
-        addValue((int) -Math.sqrt(Integer.MAX_VALUE));
-        addValue(0);
-        addValue((int) Math.sqrt(Integer.MAX_VALUE));
-        addValue(Integer.MAX_VALUE / 2);
-        addValue(Integer.MAX_VALUE - D);
-    }
-
-    private static void addValue(final int c) {
-        for (int i = -D; i <= D; i++) {
-            VALUES.add(c + i);
-        }
+        addRange(VALUES, D, Integer.MIN_VALUE + D);
+        addRange(VALUES, D, Integer.MIN_VALUE / 2);
+        addRange(VALUES, D, (int) -Math.sqrt(Integer.MAX_VALUE));
+        addRange(VALUES, D, 0);
+        addRange(VALUES, D, (int) Math.sqrt(Integer.MAX_VALUE));
+        addRange(VALUES, D, Integer.MAX_VALUE / 2);
+        addRange(VALUES, D, Integer.MAX_VALUE - D);
     }
 
     private int subtests = 0;
 
     public static void main(final String[] args) {
-        Util.checkAssert(ExceptionsTest.class);
+        checkAssert(ExceptionsTest.class);
         new ExceptionsTest().test();
     }
 
@@ -39,6 +35,7 @@ public class ExceptionsTest extends ParserTest {
     protected void test() {
         final Variable vx = new Variable("x");
         final Variable vy = new Variable("y");
+
         check((a, b) -> a + b, "+", new CheckedAdd(vx, vy));
         check((a, b) -> a - b, "-", new CheckedSubtract(vx, vy));
         check((a, b) -> a * b, "*", new CheckedMultiply(vx, vy));
@@ -81,7 +78,7 @@ public class ExceptionsTest extends ParserTest {
         if (expression.length() > 10) {
             loop: for (final char ch : CHARS) {
                 for (int i = 0; i < 10; i++) {
-                    final int index = 1 + Util.randomInt(expression.length() - 2);
+                    final int index = 1 + randomInt(expression.length() - 2);
                     final char c = expression.charAt(index);
                     if ("-( *".indexOf(c) < 0 && !Character.isLetterOrDigit(c)) {
                         final String input = expression.substring(0, index) + ch + expression.substring(index);

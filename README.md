@@ -6,7 +6,11 @@
 Домашнее задание 7. Обработка ошибок
 ---
  * *Базовая*
-    * Реализовать интерфейс [Parser](java/expression/Parser.java)
+    * Класс `CheckedParser` должен реализовывать интерфейс 
+        [Parser](java/expression/Parser.java)
+    * Классы `CheckedAdd`, `CheckedSubtract`, `CheckedMultiply`, 
+        `CheckedDivide` и `CheckedNegate` должны реализовывать интерфейс 
+        [TripleExpression](java/expression/TripleExpression.java)
     * Нельзя использовать типы `long` и `double`
     * Нельзя использовать методы классов `Math` и `StrictMath`
     * [Исходный код тестов](java/expression/ExceptionsTest.java)

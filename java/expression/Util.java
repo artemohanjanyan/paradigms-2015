@@ -1,5 +1,6 @@
 package expression;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -50,5 +51,30 @@ public class Util {
 
     public static int randomInt(final int n) {
         return RNG.nextInt(n);
+    }
+
+    @SafeVarargs
+    public static <T> List<T> list(final T... items) {
+        return new ArrayList<>(Arrays.asList(items));
+    }
+
+    static void addRange(final List<Integer> values, final int d, final int c) {
+        for (int i = -d; i <= d; i++) {
+            values.add(c + i);
+        }
+    }
+
+    public static final class Op<T> {
+        public final String name;
+        public final T f;
+
+        private Op(final String name, final T f) {
+            this.name = name;
+            this.f = f;
+        }
+    }
+
+    public static <T> Op<T> op(final String name, final T f) {
+        return new Op<>(name, f);
     }
 }

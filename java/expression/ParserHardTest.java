@@ -1,27 +1,29 @@
 package expression;
 
+import static expression.Util.*;
+
 /**
  * @author Georgiy Korneev
  */
 public class ParserHardTest extends ParserEasyTest {
     protected ParserHardTest() {
-        unary.add(new Op<>(" abs ", Math::abs));
-        unary.add(new Op<>(" square ", a -> a * a));
+        unary.add(op(" abs ", Math::abs));
+        unary.add(op(" square ", a -> a * a));
 
-        tests.addAll(ops(
-                new Op<>("abs -5", (x, y, z) -> 5L),
-                new Op<>("abs (x - y)", (x, y, z) -> Math.abs(x - y)),
-                new Op<>("abs -x", (x, y, z) -> Math.abs(-x)),
-                new Op<>("abs(x+y)", (x, y, z) -> Math.abs(x + y)),
-                new Op<>("square -5", (x, y, z) -> 25L),
-                new Op<>("square (x - y)", (x, y, z) -> (x - y) * (x - y)),
-                new Op<>("square -x", (x, y, z) -> x * x),
-                new Op<>("square(x+y)", (x, y, z) -> (x + y) * (x + y))
+        tests.addAll(list(
+                op("abs -5", (x, y, z) -> 5L),
+                op("abs (x - y)", (x, y, z) -> Math.abs(x - y)),
+                op("abs -x", (x, y, z) -> Math.abs(-x)),
+                op("abs(x+y)", (x, y, z) -> Math.abs(x + y)),
+                op("square -5", (x, y, z) -> 25L),
+                op("square (x - y)", (x, y, z) -> (x - y) * (x - y)),
+                op("square -x", (x, y, z) -> x * x),
+                op("square(x+y)", (x, y, z) -> (x + y) * (x + y))
         ));
     }
 
     public static void main(final String[] args) {
-        Util.checkAssert(ParserHardTest.class);
+        checkAssert(ParserHardTest.class);
         new ParserHardTest().test();
     }
 }

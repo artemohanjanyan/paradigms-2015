@@ -1,7 +1,6 @@
 package expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -23,34 +22,34 @@ public class ParserTest {
     }
 
     protected ParserTest() {
-        unary.add(new Op<>("-", a -> -a));
+        unary.add(op("-", a -> -a));
 
-        levels.add(ops(
-                new Op<>("+", (a, b) -> a + b),
-                new Op<>("-", (a, b) -> a - b)
+        levels.add(list(
+                op("+", (a, b) -> a + b),
+                op("-", (a, b) -> a - b)
         ));
-        levels.add(ops(
-                new Op<>("*", (a, b) -> a * b),
-                new Op<>("/", (a, b) -> b == 0 ? null : a / b)
+        levels.add(list(
+                op("*", (a, b) -> a * b),
+                op("/", (a, b) -> b == 0 ? null : a / b)
         ));
 
-        tests = ParserTest.<TExpression>ops(
-                new Op<>("10", (x, y, z) -> 10L),
-                new Op<>("x", (x, y, z) -> x),
-                new Op<>("y", (x, y, z) -> y),
-                new Op<>("z", (x, y, z) -> z),
-                new Op<>("x+2", (x, y, z) -> x + 2),
-                new Op<>("2-y", (x, y, z) -> 2 - y),
-                new Op<>("  3*  z  ", (x, y, z) -> 3 * z),
-                new Op<>("x/  -  2", (x, y, z) -> -x / 2),
-                new Op<>("x*y+(z-1   )/10", (x, y, z) -> x * y + (z - 1) / 10),
-                new Op<>("-(-(-\t\t-5 + 16   *x*y) + 1 * z) -(((-11)))", (x, y, z) -> -(-(5 + 16 * x * y) + z) + 11),
-                new Op<>("" + Integer.MAX_VALUE, (x, y, z) -> (long) Integer.MAX_VALUE),
-                new Op<>("" + Integer.MIN_VALUE, (x, y, z) -> (long) Integer.MIN_VALUE),
-                new Op<>("x--y--z", (x, y, z) -> x + y + z),
-                new Op<>("((2+2))-0/(--2)*555", (x, y, z) -> 4L),
-                new Op<>("x-x+y-y+z-(z)", (x, y, z) -> 0L),
-                new Op<>(repeat("(", 500) + "x + y + (-10*-z)" + repeat(")", 500), (x, y, z) -> x + y + 10 * z)
+        tests = list(
+                op("10", (x, y, z) -> 10L),
+                op("x", (x, y, z) -> x),
+                op("y", (x, y, z) -> y),
+                op("z", (x, y, z) -> z),
+                op("x+2", (x, y, z) -> x + 2),
+                op("2-y", (x, y, z) -> 2 - y),
+                op("  3*  z  ", (x, y, z) -> 3 * z),
+                op("x/  -  2", (x, y, z) -> -x / 2),
+                op("x*y+(z-1   )/10", (x, y, z) -> x * y + (z - 1) / 10),
+                op("-(-(-\t\t-5 + 16   *x*y) + 1 * z) -(((-11)))", (x, y, z) -> -(-(5 + 16 * x * y) + z) + 11),
+                op("" + Integer.MAX_VALUE, (x, y, z) -> (long) Integer.MAX_VALUE),
+                op("" + Integer.MIN_VALUE, (x, y, z) -> (long) Integer.MIN_VALUE),
+                op("x--y--z", (x, y, z) -> x + y + z),
+                op("((2+2))-0/(--2)*555", (x, y, z) -> 4L),
+                op("x-x+y-y+z-(z)", (x, y, z) -> 0L),
+                op(repeat("(", 500) + "x + y + (-10*-z)" + repeat(")", 500), (x, y, z) -> x + y + 10 * z)
         );
     }
 
@@ -58,13 +57,8 @@ public class ParserTest {
         Long evaluate(long x, long y, long z);
     }
 
-    @SafeVarargs
-    public static <T> List<Op<T>> ops(final Op<T>... ops) {
-        return new ArrayList<>(Arrays.asList(ops));
-    }
-
     public static void main(final String[] args) {
-        Util.checkAssert(ParserTest.class);
+        checkAssert(ParserTest.class);
         new ParserTest().test();
     }
 
@@ -215,16 +209,6 @@ public class ParserTest {
         Test(final String expr, final Either<Reason, Integer> answer) {
             this.expr = expr;
             this.answer = answer;
-        }
-    }
-
-    protected static final class Op<T> {
-        public final String name;
-        public final T f;
-
-        public Op(final String name, final T f) {
-            this.name = name;
-            this.f = f;
         }
     }
 }
