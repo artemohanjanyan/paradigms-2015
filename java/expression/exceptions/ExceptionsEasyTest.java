@@ -1,4 +1,4 @@
-package expression;
+package expression.exceptions;
 
 import java.util.function.LongUnaryOperator;
 

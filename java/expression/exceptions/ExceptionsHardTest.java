@@ -1,4 +1,4 @@
-package expression;
+package expression.exceptions;
 
 import static expression.Util.*;
 

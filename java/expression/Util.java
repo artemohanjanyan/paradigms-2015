@@ -58,7 +58,7 @@ public class Util {
         return new ArrayList<>(Arrays.asList(items));
     }
 
-    static void addRange(final List<Integer> values, final int d, final int c) {
+    public static void addRange(final List<Integer> values, final int d, final int c) {
         for (int i = -d; i <= d; i++) {
             values.add(c + i);
         }

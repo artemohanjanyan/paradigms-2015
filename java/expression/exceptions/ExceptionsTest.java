@@ -1,4 +1,10 @@
-package expression;
+package expression.exceptions;
+
+import expression.Either;
+import expression.Parser;
+import expression.ParserTest;
+import expression.TripleExpression;
+import expression.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +61,7 @@ public class ExceptionsTest extends ParserTest {
             try {
                 new CheckedParser().parse(op.f);
                 assert false : "Successfully parsed " + op.f;
-            } catch (final ParserException e) {
+            } catch (final Exception e) {
                 System.out.format("%-30s %s", op.name, e.getClass().getSimpleName() + ": " + e.getMessage());
                 System.out.println();
             }
