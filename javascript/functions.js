@@ -107,7 +107,13 @@ example("sumAbs(1, -2, 3)");
 
 section("Unify sumSquares and sumAbs");
 function map(f) {
-    return foldLeft(function (a, b) { a.push(f(b)); return a; }, []);
+    return function() {
+        var result = [];
+        for (var i = 0; i < arguments.length; i++) {
+            result.push(f(arguments[i]));
+        }
+        return result;
+    }
 }
 function compose(f, g) {
     return function() {
