@@ -8,17 +8,19 @@ public class RunJS {
             this.engine = engine;
         }
 
-        public void print(String... message) {
-            for (int i = 0; i < message.length; i++) {
-                if (i > 0) {
-                    System.out.print(" ");
+        public void print(String[] messages) {
+            for (int i = 0; i < messages.length; i++) {
+                if (messages[i] != null) {
+                    if (i > 0) {
+                        System.out.print(" ");
+                    }
+                    System.out.print(messages[i]);
                 }
-                System.out.print(message[i]);
             }
         }
 
-        public void println(String... message) {
-            print(message);
+        public void println(String[] messages) {
+            print(messages);
             System.out.println();
         }
 
@@ -31,9 +33,10 @@ public class RunJS {
         ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine.put("io", new IO(engine));
         engine.eval(
-            "println = function() { io.println(Array.prototype.slice.call(arguments)); };" + 
-            "print   = function() { io.print  (Array.prototype.slice.call(arguments)); };" +
-            "include = function(file) { io.include(file); }"
+            "var toArray = function(args){ return Array.prototype.map.call(args, function (a) { return '' + a})}; "+
+            "var println = function() { io.println(toArray(arguments)); };" + 
+            "var print   = function() { io.print  (toArray(arguments)); };" +
+            "var include = function(file) { io.include(file); }"
         );
 
         engine.eval(new InputStreamReader(new FileInputStream("script.js"), "UTF-8"));
