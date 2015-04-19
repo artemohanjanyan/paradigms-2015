@@ -13,7 +13,7 @@ section("Values are typed");
 var as = ["'Hello'", 1, 1.1, [1, 2, 3], new Array(1, 2, 3), null, undefined];
 for (var i = 0; i < as.length; i++) {
     println("a =", as[i]);
-    println("    typeof(a) ->", typeof(a[i]));
+    println("    typeof(a) ->", typeof(as[i]));
 }
 
 section("Ordinary comparison");
