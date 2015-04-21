@@ -6,7 +6,7 @@ var dump = function() {
     for (var i = 0; i < arguments.length; i++) {
         println(arguments[i]);
     }
-}
+};
 println("dump =", dump);
 dump(1, 2, "hello", null, undefined);
 
@@ -17,7 +17,7 @@ var sum = function() {
         result += arguments[i];
     }
     return result;
-}
+};
 println("sum =", sum);
 example("sum(1, 2, 3)");
 
@@ -30,11 +30,11 @@ var minimum = function() {
         }
     }
     return result;
-}
+};
 println("minimum =", minimum);
 example("minimum(1, -2, 3)");
 
-section("Minumum by absolute value");
+section("Minimum by absolute value");
 var minimumByAbs = function() {
     var result = Infinity;
     for (var i = 0; i < arguments.length; i++) {
@@ -43,7 +43,7 @@ var minimumByAbs = function() {
         }
     }
     return result;
-}
+};
 println("minimumByAbs =", minimumByAbs);
 example("minimumByAbs(1, -2, 3)");
 
@@ -58,12 +58,12 @@ var minimumBy = function(comparator) {
         }
         return result;
     }
-}
+};
 var comparator = function(f) {
     return function(a, b) {
         return f(a) - f(b);
     }
-}
+};
 var identity = function(a) { return a; };
 
 minimum = minimumBy(comparator(identity));
@@ -132,7 +132,7 @@ var diff = function(dx) {
             return (f(x + dx) - f(x)) / dx;
         }
     }
-}
+};
 
 var dsin = diff(1e-6)(Math.sin);
 for (var i = 0; i < 10; i++) {
@@ -146,7 +146,7 @@ var curry = function(f) {
             return f(a, b);
         }
     }
-}
+};
 
 var add = curry(function(a, b) { return a + b; });
 var add10 = add(10);
@@ -164,7 +164,7 @@ var mCurry = function(f) {
             return f.apply(null, newArguments);
         }
     }
-}
+};
 
 var sub = mCurry(function(a, b, c) { return a - b - c; });
 var sub10 = sub(10);

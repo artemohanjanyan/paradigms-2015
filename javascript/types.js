@@ -36,7 +36,7 @@ println("2.1 + 3.1 ->", 2.1 + 3.1);
 println("'2.1' + '3.1' ->", '2.1' + '3.1');
 
 section("Arrays");
-var as = [10, 20, 30];
+as = [10, 20, 30];
 println("as ->", "[" + as +"]"); 
 println("as[2] ->", as[2]);
 println("as[3] ->", as[3]);
