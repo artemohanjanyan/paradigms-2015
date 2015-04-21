@@ -3,7 +3,7 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
-Домашнее задание 9. Выражения на JavaScript
+Домашнее задание 9. Функциональные выражения на JavaScript
 ---
  * *Модификация*. Дополнительное реализовать поддержку:
     * унарных операций:
@@ -12,13 +12,13 @@
     * бинарных операций:
         * `mod` (`%`) — взятие по модулю, `5 2 %` равно 1;
         * `power` (`**`) — взятие по модулю, `5 2 **` равно 25.
-    * [Исходный код тестов простого варианта](javascript/test/ModifiedExpressionTest.java)
-    * [Исходный код тестов сложного варианта](javascript/test/ModifiedParserTest.java)
+    * [Исходный код тестов](javascript/test/ModifiedExpressionTest.java)
+        * Запускать c аргументом `hard` или `easy`
  * *Базовая*
     * Код должен находиться в файле `expression.js`.
-    * [Исходный код тестов простого варианта](javascript/test/ExpressionTest.java)
-    * [Исходный код тестов сложного варианта](javascript/test/ParserTest.java)
-
+    * [Исходный код тестов](javascript/test/ExpressionTest.java)
+        * Запускать c аргументом `hard` или `easy`
+        * Решение должно называться `expression.js`
 
 Домашнее задание 8. Вычисление в различных типах
 ---
