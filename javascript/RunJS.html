@@ -8,16 +8,12 @@
 
     var logArea = document.getElementById("out");
     function println() {
-        if (arguments.length != 0) {
-            print.apply(null, arguments);
-        }
+        print.apply(null, arguments);
         print("\n");
     }
 
     function print() {
-        for (var i = 0; i < arguments.length; i++) {
-            logArea.innerHTML += escape((i == 0 ? "" : " ") + arguments[i]);
-        }
+        logArea.innerHTML += escape(Array.prototype.map.call(arguments, String).join(' '));
     }
 
     function include(file) {
