@@ -20,16 +20,14 @@ public class RunJS {
             engine.eval(new InputStreamReader(new FileInputStream(file), "UTF-8"));
         }
     }
+
     public static void main(final String[] args) throws ScriptException, IOException {
         final ScriptEngineManager factory = new ScriptEngineManager();
         final ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine.put("io", new IO(engine));
-        engine.eval(
-            "var println = function() { io.println(Array.prototype.map.call(arguments, String).join(' ')); };" +
-            "var print   = function() { io.print  (Array.prototype.map.call(arguments, String).join(' ')); };" +
-            "var include = function(file) { io.include(file); }"
-        );
-
+        engine.eval("var println = function() { io.println(Array.prototype.map.call(arguments, String).join(' ')); };");
+        engine.eval("var print   = function() { io.print  (Array.prototype.map.call(arguments, String).join(' ')); };");
+        engine.eval("var include = function(file) { io.include(file); }");
         engine.eval(new InputStreamReader(new FileInputStream("script.js"), "UTF-8"));
     }
 }
