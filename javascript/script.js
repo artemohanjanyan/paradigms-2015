@@ -7,7 +7,7 @@ include("magic.js");
 include("types.js");
 include("functions.js");
 include("vectors.js");
-include("objects.js");
-include("closures.js");
-include("stacks.js");
-include("errors.js");
+include("objects.js")
+include("closures.js")
+include("stacks.js")
+include("errors.js")
