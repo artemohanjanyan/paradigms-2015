@@ -3,11 +3,11 @@
 // insert your code here
 println("Hello", "world");
 
-include("magic.js");
-include("types.js");
-include("functions.js");
-include("vectors.js");
-include("objects.js")
-include("closures.js")
-include("stacks.js")
-include("errors.js")
+include("examples/magic.js");
+include("examples/types.js");
+include("examples/functions.js");
+include("examples/vectors.js");
+include("examples/objects.js")
+include("examples/closures.js")
+include("examples/stacks.js")
+include("examples/errors.js")
