@@ -1,5 +1,10 @@
-import javax.script.*;
-import java.io.*;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class RunJS {
     public static class IO {
@@ -25,6 +30,7 @@ public class RunJS {
         final ScriptEngineManager factory = new ScriptEngineManager();
         final ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine.put("io", new IO(engine));
+        engine.put("global", engine.getContext().getBindings(ScriptContext.ENGINE_SCOPE));
         engine.eval("var println = function() { io.println(Array.prototype.map.call(arguments, String).join(' ')); };");
         engine.eval("var print   = function() { io.print  (Array.prototype.map.call(arguments, String).join(' ')); };");
         engine.eval("var include = function(file) { io.include(file); }");
