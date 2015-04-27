@@ -3,6 +3,15 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
+
+Домашнее задание 10. Объектные выражения на JavaScript
+---
+ * *Базовая*
+    * Код должен находиться в файле `expression.js`.
+    * [Исходный код тестов](javascript/test/ObjectExpressionTest.java)
+        * Запускать c аргументом `easy`, `hard` или `bonus`
+        * Решение должно называться `objectExpression.js`
+
 Домашнее задание 9. Функциональные выражения на JavaScript
 ---
  * *Модификация*. Дополнительное реализовать поддержку:
