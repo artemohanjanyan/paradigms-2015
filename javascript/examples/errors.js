@@ -1,5 +1,7 @@
 "use strict";
 
+lecture("Final notes");
+
 chapter("Errors");
 try {
     1();

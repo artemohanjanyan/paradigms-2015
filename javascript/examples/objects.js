@@ -1,5 +1,7 @@
 "use strict";
 
+lecture("Objects and methods");
+
 chapter("Objects");
 
 section("Objects as associative arrays");
