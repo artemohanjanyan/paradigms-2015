@@ -10,6 +10,8 @@
     * унарных операций:
         * `sin` — синус, `4846147 sin` примерно равно 1;
         * `cos` — косинус, `5419351 cos` примерно равно 1;
+    * [Исходный код тестов](javascript/test/ModifiedObjectExpressionTest.java)
+        * Запускать c аргументом `easy`, `hard` или `bonus`
  * *Базовая*
     * Код должен находиться в файле `objectExpression.js`.
     * [Исходный код тестов](javascript/test/ObjectExpressionTest.java)
