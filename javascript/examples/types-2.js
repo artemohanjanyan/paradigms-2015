@@ -14,14 +14,13 @@ example("new Object()", "Object");
 var func = function(a, b) { return a + b; };
 example("func", "Function");
 
-
 section("Properties of Object");
 println("Functions");
     example("eval('2+3')", "    eval(code)");
     example("parseInt('20', 16)", "    parseInt(string, radix)");
     example("parseFloat('1.1e1')", "    parseFloat(string)");
     example("[isNaN(10),isNaN(Infinity),isNaN(NaN)]", "    isNaN(number)");
-    example("[isFinite(10),isNaN(Infinity),isFinite(NaN)]", "    isFinite(number)");
+    example("[isFinite(10),isFinite(Infinity),isFinite(NaN)]", "    isFinite(number)");
 println("URI functions");
     example("encodeURI('https://ru.wikipedia.org/wiki/Язык#Ссылки')", "    encodeURI(uri)");
     example("decodeURI('https://ru.wikipedia.org/wiki/%D0%AF%D0%B7%D1%8B%D0%BA')", "    decodeURI(uri)");
@@ -93,6 +92,6 @@ println("Functional");
     example("arr.every(isFinite)", "    every(predicate, this?)");
     example("arr.some(isFinite)", "    some(predicate, this?)");
     example("arr.filter(isFinite)", "    filter(predicate, this?)");
-function concat(prev, current, index) { return prev + " " + index + "=" + current; }
+function concat(prev, current, index, arr) { return prev + " " + index + "=" + current; }
     example("arr.reduce(concat, 'zero')", "    reduce(f2, zero)");
     example("arr.reduceRight(concat, 'zero')", "    reduceRight(f2, zero)");

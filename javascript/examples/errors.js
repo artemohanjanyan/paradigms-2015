@@ -37,7 +37,7 @@ try {
 println();
 
 function CustomError(message) {
-    this.name = "NotImplementedError";
+    this.name = "CustomError";
     this.message = message;
 }
 CustomError.prototype = Error.prototype;

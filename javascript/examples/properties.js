@@ -4,6 +4,7 @@ chapter("Properties");
 section("Property attributes");
 function TestObject(name) {
     this.name = name;
+    this.existingProperty = "";
 }
 TestObject.prototype.toString = function() { return "TestObject('" + this.name + "')"; }
 TestObject.prototype.inherited = "value";
