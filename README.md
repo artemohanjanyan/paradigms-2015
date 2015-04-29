@@ -3,7 +3,6 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
-
 Домашнее задание 10. Объектные выражения на JavaScript
 ---
  * *Модификация*. Дополнительное реализовать поддержку:
@@ -33,6 +32,13 @@
     * [Исходный код тестов](javascript/test/ExpressionTest.java)
         * Запускать c аргументом `hard` или `easy`
         * Решение должно называться `expression.js`
+
+Исходный код к лекции по JavaScript
+----
+* [Скрипт с примерами](javascript/script.js)
+* [Запуск в браузере](javascript/RunJS.html)
+* [Запуск из консоли](javascript/RunJS.java) (на Java)
+* [Запуск из консоли](javascript/RunJS.js) (на node.js)
 
 Домашнее задание 8. Вычисление в различных типах
 ---
