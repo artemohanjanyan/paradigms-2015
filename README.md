@@ -3,9 +3,14 @@
 
 [Условия домашних заданий](http://www.kgeorgiy.info/courses/java-intro/homeworks.html)
 
-
 Домашнее задание 11. Обработка ошибок на JavaScript
 ---
+ * *Модификация*. Дополнительное реализовать поддержку:
+    * унарных операций:
+        * `exp` — экспонента, `0 exp` равно 1;
+        * `atan` — арктангенс, `0 atan` равно 0;
+    * [Исходный код тестов](javascript/test/ModifiedPrefixParserTest.java)
+        * Запускать c аргументом `easy` или `hard`
  * *Базовая*
     * Код должен находиться в файле `objectExpression.js`.
     * [Исходный код тестов](javascript/test/PrefixParserTest.java)
