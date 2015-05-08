@@ -89,7 +89,7 @@ public abstract class BaseTest<E extends Engine> {
         assertEquals(result.context, precision, result.value.doubleValue(), expected);
     }
 
-    private Expr<Double> generate(final double[] vars, final int depth) {
+    protected Expr<Double> generate(final double[] vars, final int depth) {
         if (depth == 0) {
             if (RNG.nextBoolean()) {
                 final int id = randomInt(3);
@@ -110,7 +110,7 @@ public abstract class BaseTest<E extends Engine> {
         }
     }
 
-    private Expr<Double> generateP(final double[] vars, final int depth) {
+    protected Expr<Double> generateP(final double[] vars, final int depth) {
         return generate(vars, randomInt(depth));
     }
 
