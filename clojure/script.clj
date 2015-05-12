@@ -10,3 +10,10 @@
 (load-file "examples/read.clj")
 (load-file "examples/functions-2.clj")
 (load-file "examples/vector-operations.clj")
+
+(lecture "Objects and evaluation")
+(load-file "examples/js-objects.clj")
+(load-file "examples/java-objects.clj")
+(load-file "examples/evaluation-order.clj")
+(load-file "examples/church.clj")
+
