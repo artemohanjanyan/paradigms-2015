@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Optional;
+
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
@@ -11,7 +13,8 @@ public class ModifiedClojureFunctionExpressionTest extends ClojureFunctionExpres
     protected ModifiedClojureFunctionExpressionTest(final boolean testMultiarg) {
         super(
                 new ModifiedObjectExpressionTest.SinCosLanguage(UNPARSED, PARSED, OPS),
-                testMultiarg
+                testMultiarg,
+                Optional.<String>empty()
         );
     }
 
